@@ -1,0 +1,67 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+Main *-- StreamingService
+StreamingService "1" *-- "*" User
+StreamingService "1" *-- "*" Media
+Media <|-- Movie
+Media <|-- Series
+TextUI <--StreamingService
+FileIO <-- StreamingService
+
+class Main
+{
++ main()
+}
+
+class StreamingService
+{
+ - ArrayList<Media>
+ + startMenu()
+ + mainMenu()
+ + searchByName()
+ + searchByCategory()
+ + getListOfWatched()
+ + getListOfSaved()
+}
+
+abstract class Media
+{
+# String name
+# int ReleaseYear
+# double rating
+# String category
++ media(int releaseYear, double rating, String category)
+}
+
+class Movie
+{
+- double lengthInMinutes
++ movie(superclass, double lengthInMinutes)
+}
+
+class Series
+{
+- int season
+- int episode
+- int endYear
++ movie(superclass, int season, int episode, int endYear)
+}
+
+class User
+{
+- String username
+- String password
+- Arraylist seenMovies
+- Arraylist wantsToSee
+}
+
+class TextUI
+{
+}
+
+class FileIO
+{
+}
+
+@enduml
