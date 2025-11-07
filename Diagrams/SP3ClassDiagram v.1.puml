@@ -60,6 +60,7 @@ class User
 - String password
 - Arraylist seenMedie
 - Arraylist wantsToSee
++ User(String username, String password)
 }
 
 class TextUI
