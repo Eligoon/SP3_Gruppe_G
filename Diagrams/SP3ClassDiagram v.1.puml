@@ -8,8 +8,8 @@ Media <|-- Movie
 Media <|-- Series
 TextUI <--StreamingService
 FileIO <-- StreamingService
-Play <|-- Movie
-Play <|-- Series
+Playable <|-- Movie
+Playable <|-- Series
 
 
 class Main
@@ -70,7 +70,7 @@ class FileIO
 {
 }
 
-interface Play
+interface Playable
 {
 # playMedia()
 }
