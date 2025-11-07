@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+actor User
+
+usecase StartMenu
+usecase MainMenu
+usecase SearchByName
+usecase SearchByCategory
+usecase SeenMovies
+usecase WantsToSee
+usecase PlayMedia
+
+User --> StartMenu
+StartMenu --> MainMenu
+MainMenu --> SearchByName
+MainMenu --> SearchByCategory
+MainMenu --> SeenMovies
+MainMenu --> WantsToSee
+SearchByName --> PlayMedia
+SearchByCategory --> PlayMedia
+SeenMovies --> PlayMedia
+WantsToSee --> PlayMedia
+
+@enduml
