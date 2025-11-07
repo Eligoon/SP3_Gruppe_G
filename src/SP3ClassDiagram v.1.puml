@@ -19,6 +19,7 @@ class Main
 
 class StreamingService
 {
+ - ArrayList<User>
  - ArrayList<Media>
  + startMenu()
  + mainMenu()
@@ -41,6 +42,7 @@ class Movie
 {
 - double lengthInMinutes
 + movie(superclass, double lengthInMinutes)
++ toString()
 }
 
 class Series
@@ -49,6 +51,7 @@ class Series
 - int episode
 - int endYear
 + movie(superclass, int season, int episode, int endYear)
++ toString()
 }
 
 class User
