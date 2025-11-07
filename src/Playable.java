@@ -1,5 +1,5 @@
 // Media interface defines method for Media (Movie or Series)
 interface Playable
 {
- String playMedia();
+ void playMedia();
 }
