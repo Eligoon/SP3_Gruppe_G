@@ -19,6 +19,7 @@ class Main
 
 class StreamingService
 {
+ - ArrayList<User>
  - ArrayList<Media>
  + startMenu()
  + mainMenu()
