@@ -8,6 +8,9 @@ Media <|-- Movie
 Media <|-- Series
 TextUI <--StreamingService
 FileIO <-- StreamingService
+Play <|-- Movie
+Play <|-- Series
+
 
 class Main
 {
@@ -62,6 +65,11 @@ class TextUI
 
 class FileIO
 {
+}
+
+interface Play
+{
+# playMedia()
 }
 
 @enduml
