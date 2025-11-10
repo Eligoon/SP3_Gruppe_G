@@ -31,12 +31,34 @@ public class TextUI {
         System.out.println(msg);
 
     }
-    public int promptNumeric(String msg){
-        displayMsg(msg);                       //Stille brugeren et spørgsmål
-        String input = sc.nextLine();                  //Give brugere et sted at placere sit svar og vente på svaret
-        int numInput = Integer.parseInt(input);        //Konvertere svaret til et tal
 
-        return numInput;
+    public int promptNumeric(String msg){
+        int num = -1;
+
+        while (num < 0)
+        {
+            System.out.print(msg + " ");
+            String input = sc.nextLine();
+
+            try
+            {
+                // Try converting the input to an integer
+                num = Integer.parseInt(input);
+
+                // Check if the number is non-negative
+                if (num < 0)
+                {
+                    System.err.println("Please enter a non-negative number.");
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                // If input wasn't a valid number
+                System.err.println("Invalid input, enter a valid number.");
+            }
+        }
+
+        return num; // Return the valid number
     }
 
     public String promptText(String msg){
