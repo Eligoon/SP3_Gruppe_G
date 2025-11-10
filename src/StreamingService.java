@@ -58,6 +58,52 @@ public class StreamingService {
         }
     }
 
+    private Media searchByName()
+    {
+        String searchFor = ui.promptText("Enter the name of the media to search for: ").toLowerCase();
+
+        ArrayList<Media> foundMedia = new ArrayList<>();
+
+        // Search through all movies
+        for (Movie m : movies)
+        {
+            if (m.getName().toLowerCase().contains(searchFor))
+            {
+                foundMedia.add(m);
+            }
+        }
+
+        // Search through all series
+        for (Series s : series)
+        {
+            if (s.getName().toLowerCase().contains(searchFor))
+            {
+                foundMedia.add(s);
+            }
+        }
+
+        if (foundMedia.isEmpty())
+        {
+            System.out.println("No media found with that name.");
+            return null;
+        }
+
+        // Create a list of media names for the menu
+        ArrayList<String> mediaNames = new ArrayList<>();
+        for (Media media : foundMedia)
+        {
+            mediaNames.add(media.getName());
+        }
+
+        // Prompt the user to select a media item
+        int choice = ui.promptMenu("Select a media from the results:", mediaNames);
+
+        Media selected = foundMedia.get(choice - 1);
+        System.out.println("You selected: " + selected.getName());
+
+        return selected;
+    }
+
     public void getListOfSaved() {
         ArrayList<String> list = new ArrayList<>();
         list = u.getWantsToSee(); // u er den bruger som er logget ind
