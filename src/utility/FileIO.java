@@ -38,10 +38,10 @@ public class FileIO {
         File file = new File(path);
         try {
             Scanner scan = new Scanner(file);
-            scan.nextLine(); // skip header "Name, Score"
+            scan.nextLine();
 
             while (scan.hasNextLine()) {
-                String line = scan.nextLine();   //  "Egon, 1000000"
+                String line = scan.nextLine();
                 data.add(line);
             }
         } catch (FileNotFoundException e) {
@@ -56,7 +56,7 @@ public class FileIO {
 
         try {
             Scanner scan = new Scanner(file);
-            scan.nextLine(); // skip header "Name, Score"
+            scan.nextLine();
 
             for(int i = 0; i < data.length; i++){
                 String line = scan.nextLine();
