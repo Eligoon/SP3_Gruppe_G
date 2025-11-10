@@ -4,7 +4,7 @@ public class StreamingService {
     private Scanner scanner;
     private List<Movie> movies;
     private List<Series> series;
-    private User currentUser;
+    private ArrayList<User> users = new ArrayList<>();
 
     public StreamingService() {
         this.scanner = new Scanner(System.in);
@@ -24,11 +24,7 @@ public class StreamingService {
         return series;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
+    public ArrayList<User> getUsers() {
+        return users;
     }
 }
