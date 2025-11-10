@@ -12,4 +12,8 @@ public abstract class Media
         this.rating = rating;
         this.category = category;
     }
+
+    public String getName() {
+        return name;
+    }
 }
