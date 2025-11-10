@@ -16,6 +16,27 @@ public class StreamingService {
         this.series = new ArrayList<>();
     }
 
+    private void startMenu() {
+        ArrayList<String> menuOptions = new ArrayList<>();
+        menuOptions.add("Create new user");
+        menuOptions.add("Log in");
+
+        boolean continueLoop = true;
+        while(continueLoop) {
+            int choice = ui.promptMenu("Start menu", menuOptions);
+
+            if(choice == 1) {
+                createNewUser();
+                continueLoop = false;
+            } else if(choice == 2) {
+                User currentUser = logIn();
+                continueLoop = false;
+            } else {
+                ui.displayMsg("Type a valid number");
+            }
+        }
+    }
+
     private void mainMenu()
     {
         // Define menu options
@@ -116,6 +137,36 @@ public class StreamingService {
         list = u.getSeenMedia(); // u er den bruger som er logget ind
         int choice = ui.promptMenu("Select media", list);
         list.get(choice).playMedia();
+    }
+
+    public User logIn() {
+        boolean continueLoop = true;
+        User currentUser = null;
+        while(continueLoop) {
+            String usernameInput = ui.promptText("Type your username");
+            for (int i = 0; i < users.size(); i++) {
+                if (usernameInput.equals(users.get(i).getUsername())) {
+                    currentUser = users.get(i);
+                    break;
+                }
+            }
+            if (currentUser == null) {
+                ui.displayMsg("No username found, try again");
+            } else {
+                continueLoop = false;
+            }
+        }
+        continueLoop = true;
+        while (continueLoop) {
+            String passwordInput = ui.promptText("Type password for " + currentUser.getUsername());
+            if (passwordInput.equals(currentUser.getPassword())) {
+                ui.displayMsg("Logged in as " + currentUser.getUsername());
+                continueLoop = false;
+            } else {
+                ui.displayMsg("Wrong password, try again");
+            }
+        }
+        return currentUser;
     }
 
     // Getters and setters
