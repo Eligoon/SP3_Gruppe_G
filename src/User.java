@@ -7,8 +7,8 @@ public class User {
     private String password;
 
 // User media information
-    private ArrayList<String> seenMedia = new ArrayList<String>();
-    private ArrayList<String> wantsToSee = new ArrayList<String>();
+    private ArrayList<Media> seenMedia = new ArrayList<Media>();
+    private ArrayList<Media> wantsToSee = new ArrayList<Media>();
 
 //Constructor
     public User(String username, String password) {
