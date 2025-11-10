@@ -81,4 +81,62 @@ public class TextUI {
             return promptBinary(msg);
         }
     }
+
+    // Displays a numbered menu and prompts the user to select one of the options.
+    // Menu options are always numbered starting from 1 and up.
+    public int promptMenuOptions(ArrayList<String> menuOptions)
+    {
+        int choice = -1; // Initialize with an invalid value to ensure the loop runs at least once
+
+        // Repeat until the user enters a valid choice
+        while (choice == -1)
+        {
+            // Print the menu options
+            for (int i = 0; i < menuOptions.size(); i++)
+            {
+                System.out.println((i + 1) + ") " + menuOptions.get(i));
+            }
+
+            // Ask the user for input
+            System.out.print("Enter choice: ");
+            String input = sc.nextLine(); // Read input as string to safely handle invalid inputs
+
+            try
+            {
+                // Try converting the input to an integer
+                choice = Integer.parseInt(input);
+
+                // Validate the input
+                if (choice >= 1 && choice <= menuOptions.size())
+                {
+                    return choice; // Valid choice; return it
+                }
+
+                // If we reach here, the number was outside the valid range
+                System.err.println("Invalid choice, try again.");
+                choice = -1; // Reset choice to continue looping
+            }
+            catch (NumberFormatException e)
+            {
+                // Handle the case where input wasn't a valid number (e.g. letters)
+                System.err.println("Invalid input, enter a number.");
+            }
+        }
+
+        return choice; // Technically unreachable, but required for compilation
+    }
+
+    // Displays a menu with a heading and lets the user make a selection.
+    // Uses promptMenuOptions to handle user input.
+    public int promptMenu(String menuHeading, ArrayList<String> menuOptions)
+    {
+        // Show the menu header
+        System.out.println(menuHeading +
+                """
+                \n
+                ------------
+                """);
+
+        return promptMenuOptions(menuOptions);
+    }
 }
