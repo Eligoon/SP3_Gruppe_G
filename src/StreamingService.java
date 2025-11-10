@@ -35,7 +35,7 @@ public class StreamingService {
             switch (choice)
             {
                 case 1:
-                   searchByName();
+                    searchByName();
                     break;
                 case 2:
                     searchByCategory();
