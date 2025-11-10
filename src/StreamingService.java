@@ -58,6 +58,20 @@ public class StreamingService {
         }
     }
 
+    public void getListOfSaved() {
+        ArrayList<String> list = new ArrayList<>();
+        list = u.getWantsToSee(); // u er den bruger som er logget ind
+        int choice = ui.promptMenu("Select media", list);
+        list.get(choice).playMedia();
+    }
+
+    public void getListOfWatched() {
+        ArrayList<String> list = new ArrayList<>();
+        list = u.getSeenMedia(); // u er den bruger som er logget ind
+        int choice = ui.promptMenu("Select media", list);
+        list.get(choice).playMedia();
+    }
+
     // Getters and setters
     public Scanner getScanner() {
         return scanner;
