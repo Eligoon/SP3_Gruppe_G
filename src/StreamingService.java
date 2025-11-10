@@ -18,7 +18,7 @@ public class StreamingService {
 
     private void mainMenu()
     {
-// Define menu options
+        // Define menu options
         ArrayList<String> menuOptions = new ArrayList<>();
         menuOptions.add("Search for media by name");
         menuOptions.add("Search for media by category");
