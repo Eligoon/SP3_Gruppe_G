@@ -1,39 +1,21 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class MainMenuCategory {
-    private List<Content> contentLibrary;
+    private final List<Media> mediaLibrary;
 
-    public MainMenuCategory() {
-        this.contentLibrary = new ArrayList<>();
+    public MainMenuCategory(List<Media> mediaLibrary) {
+        this.mediaLibrary = mediaLibrary;
     }
-
-    public List<Content> searchByCategory(String category) {
-        List<Content> results = new ArrayList<>();
-        for (Content content : contentLibrary) {
-            if (content.getCategory().equalsIgnoreCase(category)) {
-                results.add(content);
-            }
-        }
-        return results;
-    }
-
-    public static class Content {
-        private String title;
-        private String category;
-
-        public Content(String title, String category) {
-            this.title = title;
-            this.category = category;
+    
+    public List<Media> searchByCategory(String category) {
+        if (category == null || category.isBlank()) {
+            return List.of();
         }
 
-        public String getTitle() {
-            return title;
-        }
-
-        public String getCategory() {
-            return category;
-        }
-
-        public String toString() {
-            return String.format("%s [%s]", title, category);
-        }
+        return mediaLibrary.stream()
+                .filter(m -> m.getCategory().equalsIgnoreCase(category))
+                .collect(Collectors.toList());
     }
 }
