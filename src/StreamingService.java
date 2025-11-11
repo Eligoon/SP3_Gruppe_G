@@ -17,7 +17,7 @@ public class StreamingService {
     }
 
     private void createNewUser() {
-        //prompt user and saves Username and password in new instance
+        //prompt user and saves Username and password in an instance
         ui.displayMsg("Welcome \nPlease Type your Username");
         String username = getScanner().nextLine();
         ui.displayMsg("Type your Password");
