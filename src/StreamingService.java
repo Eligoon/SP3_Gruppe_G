@@ -27,14 +27,6 @@ public class StreamingService {
         // Prompt for username and password
         ui.displayMsg("Creat a Netflix login. \nPlease Type your Username");
         String username = getScanner().nextLine();
-
-        // Check if username already exists
-        for (User u : users) {
-            if (u.getUsername().equals(username)) {
-                ui.displayMsg("Username already exists. Try another one.");
-                return; // exits the method, user must try again
-            }
-        }
         ui.displayMsg("Type your Password");
         String password = getScanner().nextLine();
 
@@ -56,10 +48,6 @@ public class StreamingService {
         IO.saveData(establish, path, header);
 
         ui.displayMsg("User created successfully!");
-
-        ui.displayMsg("Now log in with your new account.");
-        // Optionally, automatically start login process:
-        // User currentUser = logIn();
     }
 
     private void startMenu() {
@@ -163,16 +151,22 @@ public class StreamingService {
     }
 
     public void getListOfSaved() {
-        ArrayList<Media> list = new ArrayList<>();
-        list = currentUser.getWantsToSee(); // u er den bruger som er logget ind
-        int choice = ui.promptMenu("Select media", list);
+        ArrayList<Media> list = currentUser.getWantsToSee();
+        ArrayList<String> mediaNames = new ArrayList<>();
+        for(Media media : list) {
+            mediaNames.add(media.getName());
+        }
+        int choice = ui.promptMenu("Select media", mediaNames);
         list.get(choice).playMedia();
     }
 
     public void getListOfWatched() {
-        ArrayList<Media> list = new ArrayList<>();
-        list = currentUser.getSeenMedie(); // u er den bruger som er logget ind
-        int choice = ui.promptMenu("Select media", list);
+        ArrayList<Media> list = currentUser.getSeenMedia();
+        ArrayList<String> mediaNames = new ArrayList<>();
+        for(Media media : list) {
+            mediaNames.add(media.getName());
+        }
+        int choice = ui.promptMenu("Select media", mediaNames);
         list.get(choice).playMedia();
     }
 
