@@ -169,7 +169,7 @@ public class StreamingService {
             mediaNames.add(media.getName());
         }
         int choice = ui.promptMenu("Select media", mediaNames);
-        list.get(choice).playMedia();
+        list.get(choice -1).playMedia();
     }
 
     public void getListOfWatched() {
@@ -179,7 +179,7 @@ public class StreamingService {
             mediaNames.add(media.getName());
         }
         int choice = ui.promptMenu("Select media", mediaNames);
-        list.get(choice).playMedia();
+        list.get(choice -1).playMedia();
     }
 
     public User logIn() {
