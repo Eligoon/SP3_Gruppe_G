@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.*;
 
 public class StreamingService {
-    private Scanner scanner = new Scanner(System.in);
     private ArrayList<Movie> movies = new ArrayList<>();
     private ArrayList<Series> series = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
@@ -25,8 +24,7 @@ public class StreamingService {
 
     private void createNewUser() {
         // Prompt for username and password
-        ui.displayMsg("Creat a Netflix login. \nPlease Type your Username");
-        String username = getScanner().nextLine();
+        String username = ui.promptText("Creat a Netflix login. \nPlease Type your Username");
 
         // Check if username already exists
         for (User u : users) {
@@ -35,8 +33,8 @@ public class StreamingService {
                 return; // exits the method, user must try again
             }
         }
-        ui.displayMsg("Type your Password");
-        String password = getScanner().nextLine();
+
+        String password = ui.promptText("Type your Password");
 
         // Create new User instance
         User newUser = new User(username, password);
@@ -113,12 +111,12 @@ public class StreamingService {
                     break;
                 case 5:
                     // Exit the program safely
-                    System.out.println("Exiting streaming service.");
+                    ui.displayMsg("Exiting streaming service.");
 
                     System.exit(0);
                 default:
                     // If the input doesn't match a valid option
-                    System.out.println("Invalid choice, try again.");
+                    ui.displayMsg("Invalid choice, try again.");
             }
         }
     }
@@ -213,10 +211,6 @@ public class StreamingService {
     }
 
     // Getters and setters
-    public Scanner getScanner() {
-        return scanner;
-    }
-
     public List<Movie> getMovies() {
         return movies;
     }
