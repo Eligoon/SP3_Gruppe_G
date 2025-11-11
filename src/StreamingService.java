@@ -27,6 +27,14 @@ public class StreamingService {
         // Prompt for username and password
         ui.displayMsg("Creat a Netflix login. \nPlease Type your Username");
         String username = getScanner().nextLine();
+
+        // Check if username already exists
+        for (User u : users) {
+            if (u.getUsername().equals(username)) {
+                ui.displayMsg("Username already exists. Try another one.");
+                return; // exits the method, user must try again
+            }
+        }
         ui.displayMsg("Type your Password");
         String password = getScanner().nextLine();
 
@@ -48,6 +56,10 @@ public class StreamingService {
         IO.saveData(establish, path, header);
 
         ui.displayMsg("User created successfully!");
+
+        ui.displayMsg("Now log in with your new account.");
+        // Optionally, automatically start login process:
+        // User currentUser = logIn();
     }
 
     private void startMenu() {
