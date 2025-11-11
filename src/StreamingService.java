@@ -16,6 +16,15 @@ public class StreamingService {
         this.series = new ArrayList<>();
     }
 
+    public boolean validateUser(String username, String password) {
+        for (User u : users) {
+            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void createNewUser() {
         //prompt user and saves Username and password in an instance
         ui.displayMsg("Welcome \nPlease Type your Username");
