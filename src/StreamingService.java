@@ -1,5 +1,7 @@
+import utility.FileIO;
 import utility.TextUI;
 
+import java.io.File;
 import java.util.*;
 
 public class StreamingService {
@@ -9,12 +11,7 @@ public class StreamingService {
     private ArrayList<User> users = new ArrayList<>();
 
     TextUI ui = new TextUI();
-
-    public StreamingService() {
-        this.scanner = new Scanner(System.in);
-        this.movies = new ArrayList<>();
-        this.series = new ArrayList<>();
-    }
+    FileIO IO = new FileIO();
 
     public boolean validateUser(String username, String password) {
         for (User u : users) {
@@ -26,16 +23,30 @@ public class StreamingService {
     }
 
     private void createNewUser() {
-        //prompt user and saves Username and password in an instance
-        ui.displayMsg("Welcome \nPlease Type your Username");
+        // Prompt for username and password
+        ui.displayMsg("Creat a Netflix login. \nPlease Type your Username");
         String username = getScanner().nextLine();
         ui.displayMsg("Type your Password");
         String password = getScanner().nextLine();
 
-        //User constructor call, saves new instance
+        // Create new User instance
         User newUser = new User(username, password);
-        //returns to startmenu
-        startMenu();
+
+        // Add new user to the list
+        users.add(newUser);
+
+        // Prepare data to save all users
+        ArrayList<String> establish = new ArrayList<>();
+        for (User u : users) {
+            establish.add(u.getUsername() + ";" + u.getPassword());
+        }
+
+        // Save all users to CSV
+        String path = "Data/userLogin.csv";
+        String header = "username;password";
+        IO.saveData(establish, path, header);
+
+        ui.displayMsg("User created successfully!");
     }
 
     private void startMenu() {
