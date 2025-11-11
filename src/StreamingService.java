@@ -13,6 +13,24 @@ public class StreamingService {
     TextUI ui = new TextUI();
     FileIO IO = new FileIO();
 
+    public void start()
+    {
+        loadUsers();
+        startMenu();
+        mainMenu();
+    }
+
+    private void loadUsers() {
+        List<String> lines = IO.readData("Data/userLogin.csv");
+        for (String line : lines) {
+            if (line.startsWith("username")) continue; // skip header
+            String[] parts = line.split(";");
+            if (parts.length == 2) {
+                users.add(new User(parts[0], parts[1]));
+            }
+        }
+    }
+
     private boolean validateUser(String username, String password) {
         for (User u : users) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
