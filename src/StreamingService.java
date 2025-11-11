@@ -16,19 +16,32 @@ public class StreamingService {
         this.series = new ArrayList<>();
     }
 
+    private void createNewUser() {
+        //prompt user and saves Username and password in new instance
+        ui.displayMsg("Welcome \nPlease Type your Username");
+        String username = getScanner().nextLine();
+        ui.displayMsg("Type your Password");
+        String password = getScanner().nextLine();
+
+        //User constructor call, saves new instance
+        User newUser = new User(username, password);
+        //returns to startmenu
+        startMenu();
+    }
+
     private void startMenu() {
         ArrayList<String> menuOptions = new ArrayList<>();
         menuOptions.add("Create new user");
         menuOptions.add("Log in");
 
         boolean continueLoop = true;
-        while(continueLoop) {
+        while (continueLoop) {
             int choice = ui.promptMenu("Start menu", menuOptions);
 
-            if(choice == 1) {
+            if (choice == 1) {
                 createNewUser();
                 continueLoop = false;
-            } else if(choice == 2) {
+            } else if (choice == 2) {
                 User currentUser = logIn();
                 continueLoop = false;
             } else {
@@ -37,8 +50,7 @@ public class StreamingService {
         }
     }
 
-    private void mainMenu()
-    {
+    private void mainMenu() {
         // Define menu options
         ArrayList<String> menuOptions = new ArrayList<>();
         menuOptions.add("Search for media by name");
@@ -47,14 +59,13 @@ public class StreamingService {
         menuOptions.add("Get list of movies you have already seen");
         menuOptions.add("Exit streaming service");
 
-        while (true)
-        {
+
+        while (true) {
             // Prompt user for input using TextUI
             int choice = ui.promptMenu("Main Menu", menuOptions);
 
             // Handle the menu choice
-            switch (choice)
-            {
+            switch (choice) {
                 case 1:
                     searchByName();
                     break;
@@ -79,40 +90,33 @@ public class StreamingService {
         }
     }
 
-    private Media searchByName()
-    {
+    private Media searchByName() {
         String searchFor = ui.promptText("Enter the name of the media to search for: ").toLowerCase();
 
         ArrayList<Media> foundMedia = new ArrayList<>();
 
         // Search through all movies
-        for (Movie m : movies)
-        {
-            if (m.getName().toLowerCase().contains(searchFor))
-            {
+        for (Movie m : movies) {
+            if (m.getName().toLowerCase().contains(searchFor)) {
                 foundMedia.add(m);
             }
         }
 
         // Search through all series
-        for (Series s : series)
-        {
-            if (s.getName().toLowerCase().contains(searchFor))
-            {
+        for (Series s : series) {
+            if (s.getName().toLowerCase().contains(searchFor)) {
                 foundMedia.add(s);
             }
         }
 
-        if (foundMedia.isEmpty())
-        {
+        if (foundMedia.isEmpty()) {
             System.out.println("No media found with that name.");
             return null;
         }
 
         // Create a list of media names for the menu
         ArrayList<String> mediaNames = new ArrayList<>();
-        for (Media media : foundMedia)
-        {
+        for (Media media : foundMedia) {
             mediaNames.add(media.getName());
         }
 
@@ -142,7 +146,7 @@ public class StreamingService {
     public User logIn() {
         boolean continueLoop = true;
         User currentUser = null;
-        while(continueLoop) {
+        while (continueLoop) {
             String usernameInput = ui.promptText("Type your username");
             for (int i = 0; i < users.size(); i++) {
                 if (usernameInput.equals(users.get(i).getUsername())) {
