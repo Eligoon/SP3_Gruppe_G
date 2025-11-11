@@ -143,7 +143,7 @@ public class StreamingService {
         }
 
         if (foundMedia.isEmpty()) {
-            System.out.println("No media found with that name.");
+            ui.displayMsg("No media found with that name.");
             return null;
         }
 
@@ -157,7 +157,7 @@ public class StreamingService {
         int choice = ui.promptMenu("Select a media from the results:", mediaNames);
 
         Media selected = foundMedia.get(choice - 1);
-        System.out.println("You selected: " + selected.getName());
+        ui.displayMsg("You selected: " + selected.getName());
 
         return selected;
     }
