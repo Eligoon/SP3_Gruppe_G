@@ -1,6 +1,6 @@
 import utility.TextUI;
 
-public class Movie extends Media {
+public class Movie extends Media implements Playable {
 
     private double lengthInMinutes;
 
