@@ -6,8 +6,8 @@ import java.util.*;
 
 public class StreamingService {
     private Scanner scanner;
-    private ArrayList<Movie> movies;
-    private ArrayList<Series> series;
+    private ArrayList<Movie> movies = new ArrayList<>();
+    private ArrayList<Series> series = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private User currentUser = null;
 
