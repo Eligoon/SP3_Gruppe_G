@@ -24,7 +24,7 @@ public class StreamingService {
 
     private void createNewUser() {
         // Prompt for username and password
-        String username = ui.promptText("Creat a Netflix login. \nPlease Type your Username");
+        String username = ui.promptText("Create a Netflix login. \nPlease Type your Username");
 
         // Check if username already exists
         for (User u : users) {
