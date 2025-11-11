@@ -14,7 +14,7 @@ public class StreamingService {
     TextUI ui = new TextUI();
     FileIO IO = new FileIO();
 
-    public boolean validateUser(String username, String password) {
+    private boolean validateUser(String username, String password) {
         for (User u : users) {
             if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                 return true;
@@ -23,7 +23,7 @@ public class StreamingService {
         return false;
     }
 
-    public void createNewUser() {
+    private void createNewUser() {
         // Prompt for username and password
         ui.displayMsg("Creat a Netflix login. \nPlease Type your Username");
         String username = getScanner().nextLine();
