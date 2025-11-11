@@ -151,16 +151,22 @@ public class StreamingService {
     }
 
     public void getListOfSaved() {
-        ArrayList<Media> list = new ArrayList<>();
-        list = u.getWantsToSee(); // u er den bruger som er logget ind
-        int choice = ui.promptMenu("Select media", list);
+        ArrayList<Media> list = currentUser.getWantsToSee();
+        ArrayList<String> mediaNames = new ArrayList<>();
+        for(Media media : list) {
+            mediaNames.add(media.getName());
+        }
+        int choice = ui.promptMenu("Select media", mediaNames);
         list.get(choice).playMedia();
     }
 
     public void getListOfWatched() {
-        ArrayList<Media> list = new ArrayList<>();
-        list = u.getSeenMedia(); // u er den bruger som er logget ind
-        int choice = ui.promptMenu("Select media", list);
+        ArrayList<Media> list = currentUser.getSeenMedia();
+        ArrayList<String> mediaNames = new ArrayList<>();
+        for(Media media : list) {
+            mediaNames.add(media.getName());
+        }
+        int choice = ui.promptMenu("Select media", mediaNames);
         list.get(choice).playMedia();
     }
 

@@ -19,10 +19,10 @@ public class User {
     // Getter and setter on
     public String getUsername() {return username;}
     public void setUsername(String username) {this.username = username;}
-    public ArrayList<String> getWantsToSee() {return wantsToSee;}
-    public void setWantsToSee(ArrayList<String> wantsToSee) {this.wantsToSee = wantsToSee;}
+    public ArrayList<Media> getWantsToSee() {return wantsToSee;}
+    public void setWantsToSee(ArrayList<Media> wantsToSee) {this.wantsToSee = wantsToSee;}
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
-    public ArrayList<String> getSeenMedie() {return seenMedia;}
-    public void setSeenMedie(ArrayList<String> seenMedie) {this.seenMedia = seenMedie;}
+    public ArrayList<Media> getSeenMedia() {return seenMedia;}
+    public void setSeenMedia(ArrayList<Media> seenMedie) {this.seenMedia = seenMedie;}
 }
