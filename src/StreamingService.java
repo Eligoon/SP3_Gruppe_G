@@ -9,6 +9,7 @@ public class StreamingService {
     private List<Movie> movies;
     private List<Series> series;
     private ArrayList<User> users = new ArrayList<>();
+    private User currentUser = null;
 
     TextUI ui = new TextUI();
     FileIO IO = new FileIO();
@@ -62,7 +63,7 @@ public class StreamingService {
                 createNewUser();
                 continueLoop = false;
             } else if (choice == 2) {
-                User currentUser = logIn();
+                currentUser = logIn();
                 continueLoop = false;
             } else {
                 ui.displayMsg("Type a valid number");
