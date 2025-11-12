@@ -149,9 +149,6 @@ public class StreamingService {
 
         ui.displayMsg("User created successfully!");
 
-        ui.displayMsg("Now log in with your new account.");
-        // Optionally, automatically start login process:
-        // User currentUser = logIn();
     }
 
     private void startMenu() {
@@ -301,19 +298,20 @@ public class StreamingService {
     }
 
     private void getListOfWatched() {
-        ArrayList<Media> list = currentUser.getWantsToSee();
+        ArrayList<Media> list = currentUser.getSeenMedia();
         if (list == null || list.isEmpty()) {
-            ui.displayMsg("You have no saved media.");
+            ui.displayMsg("You have no watched media.");
             return;
         }
 
         ArrayList<String> mediaNames = new ArrayList<>();
-        for(Media media : list) {
+        for (Media media : list) {
             mediaNames.add(media.getName());
         }
         int choice = ui.promptMenu("Select media", mediaNames);
-        list.get(choice -1).playMedia(currentUser);
+        list.get(choice - 1).playMedia(currentUser);
     }
+
 
     private User logIn() {
         boolean loggedIn = false;
