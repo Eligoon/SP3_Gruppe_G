@@ -310,8 +310,15 @@ public class StreamingService {
         User foundUser = null;
 
         while (!loggedIn) {
-            String username = ui.promptText("Type your username");
-            String password = ui.promptText("Type your password");
+            String username = ui.promptText("Type your username (or type 'back' to return):");
+            if (username.equalsIgnoreCase("back")) {
+                return null; // Return null to indicate the user canceled
+            }
+
+            String password = ui.promptText("Type your password:");
+            if (password.equalsIgnoreCase("back")) {
+                return null;
+            }
 
             if (validateUser(username, password)) {
                 for (User u : users) {
@@ -324,13 +331,14 @@ public class StreamingService {
                 ui.displayMsg("Logged in as " + username);
                 loggedIn = true;
             } else {
-                ui.displayMsg("Invalid username or password. Try again.");
+                ui.displayMsg("Invalid username or password. Try again, or type 'back' to return.");
             }
         }
 
         currentUser = foundUser;
         return currentUser;
     }
+
 
 
     // Getters and setters
