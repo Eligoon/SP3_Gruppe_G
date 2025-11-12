@@ -20,6 +20,7 @@ public class StreamingService {
     {
         loadMedia();
         loadUsers();
+        loadUserMedia();
         startMenu();
         mainMenu();
     }
@@ -104,6 +105,106 @@ public class StreamingService {
 
 
 
+    private void loadUserMedia() {
+        // Load seen media
+        List<String> seenLines = IO.readData("Data/userSeen.csv");
+        for (String line : seenLines) {
+            if (line.startsWith("username")) continue; // skip header
+            String[] parts = line.split(";", 2); // username ; media1,media2,...
+            if (parts.length < 2) continue;
+
+            String username = parts[0].trim();
+            String[] mediaNames = parts[1].split(",");
+
+            // Find user
+            User user = null;
+            for (User u : users) {
+                if (u.getUsername().equals(username)) {
+                    user = u;
+                    break;
+                }
+            }
+            if (user == null) continue;
+
+            // Add media to seen list
+            for (String name : mediaNames) {
+                for (Media m : mediaLibrary) {
+                    if (m.getName().equals(name.trim())) {
+                        user.getSeenMedia().add(m);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Load saved media
+        List<String> savedLines = IO.readData("Data/userSaved.csv");
+        for (String line : savedLines) {
+            if (line.startsWith("username")) continue; // skip header
+            String[] parts = line.split(";", 2);
+            if (parts.length < 2) continue;
+
+            String username = parts[0].trim();
+            String[] mediaNames = parts[1].split(",");
+
+            // Find user
+            User user = null;
+            for (User u : users) {
+                if (u.getUsername().equals(username)) {
+                    user = u;
+                    break;
+                }
+            }
+            if (user == null) continue;
+
+            // Add media to wantsToSee list
+            for (String name : mediaNames) {
+                for (Media m : mediaLibrary) {
+                    if (m.getName().equals(name.trim())) {
+                        user.getWantsToSee().add(m);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    private void saveUserMedia() {
+        ArrayList<String> seenData = new ArrayList<>();
+        ArrayList<String> savedData = new ArrayList<>();
+
+        // Add CSV headers
+        seenData.add("username;seenMedia");
+        savedData.add("username;wantsToSee");
+
+        for (User u : users) {
+            // Seen media
+            String seenLine = u.getUsername() + ";";
+            for (Media m : u.getSeenMedia()) {
+                seenLine += m.getName() + ",";
+            }
+            if (seenLine.endsWith(",")) {
+                seenLine = seenLine.substring(0, seenLine.length() - 1); // remove trailing comma
+            }
+            seenData.add(seenLine);
+
+            // Saved media
+            String savedLine = u.getUsername() + ";";
+            for (Media m : u.getWantsToSee()) {
+                savedLine += m.getName() + ",";
+            }
+            if (savedLine.endsWith(",")) {
+                savedLine = savedLine.substring(0, savedLine.length() - 1);
+            }
+            savedData.add(savedLine);
+        }
+
+        // Save files using FileIO
+        IO.saveData(seenData, "Data/userSeen.csv", null);   // header already included
+        IO.saveData(savedData, "Data/userSaved.csv", null);
+    }
 
 
 
@@ -209,6 +310,7 @@ public class StreamingService {
                     getListOfWatched();
                     break;
                 case 5:
+                    saveUserMedia();
                     // Exit the program safely
                     ui.displayMsg("Exiting streaming service.");
 
