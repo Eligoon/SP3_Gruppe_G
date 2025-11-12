@@ -1,9 +1,9 @@
 import utility.FileIO;
 import utility.TextUI;
 
-import java.io.File;
+
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class StreamingService {
     private ArrayList<Movie> movies = new ArrayList<>();
@@ -103,7 +103,7 @@ public class StreamingService {
         return false;
     }
 
-    private void createNewUser() {
+    public void createNewUser() {
         // Prompt for username and password
         String username = ui.promptText("Create a Netflix login. \nPlease Type your Username");
 
@@ -305,7 +305,7 @@ public class StreamingService {
         list.get(choice -1).playMedia(currentUser);
     }
 
-    private User logIn() {
+    public User logIn() {
         boolean loggedIn = false;
         User foundUser = null;
 
