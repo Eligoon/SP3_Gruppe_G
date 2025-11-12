@@ -1,5 +1,5 @@
-// Media interface defines method for Media (Movie or Series)
+// Media interface marks Movie and Series as playable
 interface Playable
 {
- void playMedia();
+
 }
