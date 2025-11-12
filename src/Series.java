@@ -33,16 +33,18 @@ public class Series extends Media implements Playable {
             int choice = ui.promptNumeric("Type 1 or 2");
             if (choice == 1) {
                 ui.displayMsg("Now playing: " + getName());
-                u.getSeenMedia().add(this);
+                // Only add if not already in the list
+                if (!u.getSeenMedia().contains(this)) {
+                    u.getSeenMedia().add(this);
+                }
                 continueLoop = false;
             } else if (choice == 2) {
                 ui.displayMsg(getName() + " has been added to your list");
-                u.getWantsToSee().add(this);
-                continueLoop = false;
-            } else {
-                ui.displayMsg("Invalid number");
+                // Only add if not already in the list
+                if (!u.getWantsToSee().contains(this)) {
+                    u.getWantsToSee().add(this);
+                }
             }
         }
     }
-
 }
