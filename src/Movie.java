@@ -8,7 +8,11 @@ public class Movie extends Media implements Playable {
         super(name, releaseYear, rating, category);
         this.lengthInMinutes = lengthInMinutes;
     }
-    public void playMedia() {
+    public void playMedia(User u) {
+        /*
+        tilføjet user parameter så metoden kan blive kaldt med currentUser i
+        StreamingService
+        */
         TextUI ui = new TextUI();
         ui.displayMsg("1. Play " + this);
         ui.displayMsg("2. Save " + this + " to your list");
@@ -17,16 +21,17 @@ public class Movie extends Media implements Playable {
             int choice = ui.promptNumeric("Type 1 or 2");
             if(choice == 1) {
                 ui.displayMsg("Now playing: " + this);
-                //to do: tilføj film til brugerens seenMedia liste
+                // tilføjer medie til brugerens seenMedia liste
+                u.getSeenMedia().add(this);
                 continueLoop = false;
             } else if(choice == 2) {
                 ui.displayMsg(this + "has been added to your list");
-                //to do: tilføj film til brugerens wantsToSee liste
+                // tilføjer medie til brugerens wantsToSee liste
+                u.getWantsToSee().add(this);
                 continueLoop = false;
             } else {
                 ui.displayMsg("Invalid number");
             }
-            //to do: håndter en numberFormatException hvis brugeren ikke taster et tal
             //skift "this" til "this.name" hvis vi ændrer toString
         }
     }
