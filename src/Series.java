@@ -12,7 +12,7 @@ public class Series extends Media implements  Playable{
         this.endYear = endYear;
     }
 
-    public void playMedia() {
+    public void playMedia(User u) {
         TextUI ui = new TextUI();
         ui.displayMsg("1. Play " + this);
         ui.displayMsg("2. Save " + this + " to your list");
@@ -21,16 +21,17 @@ public class Series extends Media implements  Playable{
             int choice = ui.promptNumeric("Type 1 or 2");
             if(choice == 1) {
                 ui.displayMsg("Now playing: " + this);
-                //to do: tilføj serie til brugerens seenMedia liste
+                // tilføjer medie til brugerens seenMedia liste
+                u.getSeenMedia().add(this);
                 continueLoop = false;
             } else if(choice == 2) {
                 ui.displayMsg(this + "has been added to your list");
-                //to do: tilføj serie til brugerens wantsToSee liste
+                // tilføjer medie til brugerens wantsToSee liste
+                u.getWantsToSee().add(this);
                 continueLoop = false;
             } else {
                 ui.displayMsg("Invalid number");
             }
-            //to do: håndter en numberFormatException hvis brugeren ikke taster et tal
             //skift "this" til "this.name" hvis vi ændrer toString
         }
     }
