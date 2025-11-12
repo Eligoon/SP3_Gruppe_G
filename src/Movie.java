@@ -35,10 +35,4 @@ public class Movie extends Media implements Playable {
             //skift "this" til "this.name" hvis vi ændrer toString
         }
     }
-
-
-
-    public String toString() {
-        return name;
-    }
 }
