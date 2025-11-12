@@ -10,7 +10,7 @@ public class StreamingService {
     private ArrayList<Series> series = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private User currentUser = null;
-    private final List<Media> mediaLibrary;
+    private final List<Media> mediaLibrary = new ArrayList<>();
 
 
     TextUI ui = new TextUI();
@@ -33,6 +33,64 @@ public class StreamingService {
             }
         }
     }
+
+    private void loadMedia() {
+        // Clear existing data so it always loads fresh from CSV
+        movies.clear();
+        series.clear();
+
+        // Load Movies
+        List<String> movieLines = IO.readData("Data/movies.csv");
+        for (String line : movieLines) {
+            if (line.startsWith("name")) continue; // skip header
+            String[] parts = line.split(";");
+            // Check for malformed/wrong lines
+            if (parts.length < 5) continue;
+            try {
+                String name = parts[0];
+                int year = Integer.parseInt(parts[1]);
+                double rating = Double.parseDouble(parts[2]);
+                String category = parts[3];
+                double lenght = Double.parseDouble(parts[4]);
+
+                movies.add(new Movie(name, year, rating, category, lenght));
+            } catch (NumberFormatException e) {
+                ui.displayMsg("Skipping invalid movie line: " + line);
+            }
+        }
+
+        // Load Series
+        List<String> seriesLines = IO.readData("Data/series.csv");
+        for (String line : seriesLines) {
+            if (line.startsWith("name")) continue;
+            String[] parts = line.split(";");
+            if (parts.length < 8) continue;
+            try {
+                String name = parts[0];
+                int year = Integer.parseInt(parts[1]);
+                double rating = Double.parseDouble(parts[2]);
+                String category = parts[3];
+                double lenght = Double.parseDouble(parts[4]);
+                int season = Integer.parseInt(parts[5]);
+                int episode = Integer.parseInt(parts[6]);
+                int endYear = Integer.parseInt(parts[7]);
+
+                series.add(new Series(name, year, rating, category, season, episode, endYear));
+            } catch (NumberFormatException e) {
+                ui.displayMsg("Skipping invalid series line: " + line);
+            }
+        }
+
+        // Combine into mediaLibrary
+        if (mediaLibrary != null) {
+            mediaLibrary.clear();
+            mediaLibrary.addAll(movies);
+            mediaLibrary.addAll(series);
+        }
+
+        ui.displayMsg("Loaded " + movies.size() + " movies and " + series.size() + " series into library.");
+    }
+
 
     private boolean validateUser(String username, String password) {
         for (User u : users) {
@@ -122,7 +180,8 @@ public class StreamingService {
                     searchByName();
                     break;
                 case 2:
-                    searchByCategory();
+                    String category = ui.promptText("Enter a category to search for: ");
+                    List<Media> results = searchByCategory(category);
                     break;
                 case 3:
                     getListOfSaved();
@@ -192,7 +251,13 @@ public class StreamingService {
     }
 
     private void getListOfSaved() {
+
         ArrayList<Media> list = currentUser.getWantsToSee();
+        if (list == null || list.isEmpty()) {
+            ui.displayMsg("You have no saved media.");
+            return;
+        }
+
         ArrayList<String> mediaNames = new ArrayList<>();
         for(Media media : list) {
             mediaNames.add(media.getName());
@@ -202,7 +267,12 @@ public class StreamingService {
     }
 
     private void getListOfWatched() {
-        ArrayList<Media> list = currentUser.getSeenMedia();
+        ArrayList<Media> list = currentUser.getWantsToSee();
+        if (list == null || list.isEmpty()) {
+            ui.displayMsg("You have no saved media.");
+            return;
+        }
+
         ArrayList<String> mediaNames = new ArrayList<>();
         for(Media media : list) {
             mediaNames.add(media.getName());
@@ -212,34 +282,32 @@ public class StreamingService {
     }
 
     private User logIn() {
-        boolean continueLoop = true;
-        User currentUser = null;
-        while (continueLoop) {
-            String usernameInput = ui.promptText("Type your username");
-            for (int i = 0; i < users.size(); i++) {
-                if (usernameInput.equals(users.get(i).getUsername())) {
-                    currentUser = users.get(i);
-                    break;
+        boolean loggedIn = false;
+        User foundUser = null;
+
+        while (!loggedIn) {
+            String username = ui.promptText("Type your username");
+            String password = ui.promptText("Type your password");
+
+            if (validateUser(username, password)) {
+                for (User u : users) {
+                    if (u.getUsername().equals(username)) {
+                        foundUser = u;
+                        break;
+                    }
                 }
-            }
-            if (currentUser == null) {
-                ui.displayMsg("No username found, try again");
+
+                ui.displayMsg("Logged in as " + username);
+                loggedIn = true;
             } else {
-                continueLoop = false;
+                ui.displayMsg("Invalid username or password. Try again.");
             }
         }
-        continueLoop = true;
-        while (continueLoop) {
-            String passwordInput = ui.promptText("Type password for " + currentUser.getUsername());
-            if (passwordInput.equals(currentUser.getPassword())) {
-                ui.displayMsg("Logged in as " + currentUser.getUsername());
-                continueLoop = false;
-            } else {
-                ui.displayMsg("Wrong password, try again");
-            }
-        }
+
+        currentUser = foundUser;
         return currentUser;
     }
+
 
     // Getters and setters
     public List<Movie> getMovies() {
