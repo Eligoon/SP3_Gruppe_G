@@ -10,6 +10,8 @@ public class StreamingService {
     private ArrayList<Series> series = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private User currentUser = null;
+    private final List<Media> mediaLibrary;
+
 
     TextUI ui = new TextUI();
     FileIO IO = new FileIO();
