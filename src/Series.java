@@ -25,17 +25,18 @@ public class Series extends Media implements Playable {
 
     public void playMedia(User u) {
         TextUI ui = new TextUI();
-        ui.displayMsg("1. Play " + this);
-        ui.displayMsg("2. Save " + this + " to your list");
+        ui.displayMsg("1. Play " + getName());
+        ui.displayMsg("2. Save " + getName() + " to your list");
+
         boolean continueLoop = true;
         while (continueLoop) {
             int choice = ui.promptNumeric("Type 1 or 2");
             if (choice == 1) {
-                ui.displayMsg("Now playing: " + this);
+                ui.displayMsg("Now playing: " + getName());
                 u.getSeenMedia().add(this);
                 continueLoop = false;
             } else if (choice == 2) {
-                ui.displayMsg(this + " has been added to your list");
+                ui.displayMsg(getName() + " has been added to your list");
                 u.getWantsToSee().add(this);
                 continueLoop = false;
             } else {
@@ -43,4 +44,5 @@ public class Series extends Media implements Playable {
             }
         }
     }
+
 }

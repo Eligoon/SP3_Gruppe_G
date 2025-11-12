@@ -9,30 +9,25 @@ public class Movie extends Media implements Playable {
         this.lengthInMinutes = lengthInMinutes;
     }
     public void playMedia(User u) {
-        /*
-        tilføjet user parameter så metoden kan blive kaldt med currentUser i
-        StreamingService
-        */
         TextUI ui = new TextUI();
-        ui.displayMsg("1. Play " + this);
-        ui.displayMsg("2. Save " + this + " to your list");
+        ui.displayMsg("1. Play " + getName());
+        ui.displayMsg("2. Save " + getName() + " to your list");
+
         boolean continueLoop = true;
-        while(continueLoop) {
+        while (continueLoop) {
             int choice = ui.promptNumeric("Type 1 or 2");
-            if(choice == 1) {
-                ui.displayMsg("Now playing: " + this);
-                // tilføjer medie til brugerens seenMedia liste
-                u.getSeenMedia().add(this);
+            if (choice == 1) {
+                ui.displayMsg("Now playing: " + getName());
+                u.getSeenMedia().add(this); // mark as seen
                 continueLoop = false;
-            } else if(choice == 2) {
-                ui.displayMsg(this + "has been added to your list");
-                // tilføjer medie til brugerens wantsToSee liste
-                u.getWantsToSee().add(this);
+            } else if (choice == 2) {
+                ui.displayMsg(getName() + " has been added to your list");
+                u.getWantsToSee().add(this); // save to watch later
                 continueLoop = false;
             } else {
                 ui.displayMsg("Invalid number");
             }
-            //skift "this" til "this.name" hvis vi ændrer toString
         }
     }
+
 }
