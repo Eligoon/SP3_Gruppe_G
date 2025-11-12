@@ -16,4 +16,7 @@ public abstract class Media
     public String getName() {
         return name;
     }
+
+    public void playMedia(User currentUser) {
+    }
 }
