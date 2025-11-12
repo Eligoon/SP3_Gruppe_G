@@ -18,8 +18,10 @@ public class StreamingService {
 
     public void start()
     {
+        loadMedia();
         loadUsers();
         startMenu();
+        loadMedia();
         mainMenu();
     }
 
