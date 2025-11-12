@@ -3,6 +3,7 @@ import utility.TextUI;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StreamingService {
     private ArrayList<Movie> movies = new ArrayList<>();
@@ -176,6 +177,16 @@ public class StreamingService {
         ui.displayMsg("You selected: " + selected.getName());
 
         return selected;
+    }
+
+    public List<Media> searchByCategory(String category) {
+        if (category == null || category.isBlank()) {
+            return List.of();
+        }
+
+        return mediaLibrary.stream()
+                .filter(m -> m.getCategory().equalsIgnoreCase(category))
+                .collect(Collectors.toList());
     }
 
     public void getListOfSaved() {
