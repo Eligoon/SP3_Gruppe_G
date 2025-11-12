@@ -21,7 +21,6 @@ public class StreamingService {
         loadMedia();
         loadUsers();
         startMenu();
-        loadMedia();
         mainMenu();
     }
 
@@ -37,25 +36,28 @@ public class StreamingService {
     }
 
     private void loadMedia() {
-        // Clear existing data so it always loads fresh from CSV
         movies.clear();
         series.clear();
+        mediaLibrary.clear();
 
         // Load Movies
         List<String> movieLines = IO.readData("Data/movies.csv");
         for (String line : movieLines) {
-            if (line.startsWith("name")) continue; // skip header
+            if (line.trim().isEmpty()) continue;
             String[] parts = line.split(";");
-            // Check for malformed/wrong lines
-            if (parts.length < 5) continue;
+            if (parts.length < 5) { // name, year, category, rating, length
+                ui.displayMsg("Skipping malformed movie line: " + line);
+                continue;
+            }
             try {
-                String name = parts[0];
-                int year = Integer.parseInt(parts[1]);
-                double rating = Double.parseDouble(parts[2]);
-                String category = parts[3];
-                double lenght = Double.parseDouble(parts[4]);
+                String name = parts[0].trim();
+                int year = Integer.parseInt(parts[1].trim());
+                String category = parts[2].trim();
+                double rating = Double.parseDouble(parts[3].trim().replace(',', '.'));
+                double length = Double.parseDouble(parts[4].trim().replace(',', '.'));
 
-                movies.add(new Movie(name, year, rating, category, lenght));
+                Movie m = new Movie(name, year, rating, category, length);
+                movies.add(m);
             } catch (NumberFormatException e) {
                 ui.displayMsg("Skipping invalid movie line: " + line);
             }
@@ -64,34 +66,37 @@ public class StreamingService {
         // Load Series
         List<String> seriesLines = IO.readData("Data/series.csv");
         for (String line : seriesLines) {
-            if (line.startsWith("name")) continue;
+            if (line.trim().isEmpty()) continue;
             String[] parts = line.split(";");
-            if (parts.length < 8) continue;
+            if (parts.length < 8) { // name, year, category, rating, length, season, episode, endYear
+                ui.displayMsg("Skipping malformed series line: " + line);
+                continue;
+            }
             try {
-                String name = parts[0];
-                int year = Integer.parseInt(parts[1]);
-                double rating = Double.parseDouble(parts[2]);
-                String category = parts[3];
-                double lenght = Double.parseDouble(parts[4]);
-                int season = Integer.parseInt(parts[5]);
-                int episode = Integer.parseInt(parts[6]);
-                int endYear = Integer.parseInt(parts[7]);
+                String name = parts[0].trim();
+                int year = Integer.parseInt(parts[1].trim());
+                double rating = Double.parseDouble(parts[2].trim().replace(',', '.'));
+                String category = parts[3].trim();
+                double length = Double.parseDouble(parts[4].trim().replace(',', '.'));
+                int season = Integer.parseInt(parts[5].trim());
+                int episode = Integer.parseInt(parts[6].trim());
+                int endYear = Integer.parseInt(parts[7].trim());
 
-                series.add(new Series(name, year, rating, category, season, episode, endYear));
+                Series s = new Series(name, year, rating, category, season, episode, endYear);
+                series.add(s);
             } catch (NumberFormatException e) {
                 ui.displayMsg("Skipping invalid series line: " + line);
             }
         }
 
         // Combine into mediaLibrary
-        if (mediaLibrary != null) {
-            mediaLibrary.clear();
-            mediaLibrary.addAll(movies);
-            mediaLibrary.addAll(series);
-        }
+        mediaLibrary.addAll(movies);
+        mediaLibrary.addAll(series);
 
         ui.displayMsg("Loaded " + movies.size() + " movies and " + series.size() + " series into library.");
     }
+
+
 
 
     private boolean validateUser(String username, String password) {
@@ -103,7 +108,7 @@ public class StreamingService {
         return false;
     }
 
-    public void createNewUser() {
+    private void createNewUser() {
         // Prompt for username and password
         String username = ui.promptText("Create a Netflix login. \nPlease Type your Username");
 
@@ -250,7 +255,7 @@ public class StreamingService {
     }
 
 
-    public ArrayList<Media> searchByCategory(String category) {
+    private ArrayList<Media> searchByCategory(String category) {
         ArrayList<Media> result = new ArrayList<>();
 
         if (category == null || category.isBlank()) {
@@ -312,7 +317,7 @@ public class StreamingService {
         list.get(choice -1).playMedia(currentUser);
     }
 
-    public User logIn() {
+    private User logIn() {
         boolean loggedIn = false;
         User foundUser = null;
 
