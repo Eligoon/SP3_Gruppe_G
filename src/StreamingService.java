@@ -242,15 +242,37 @@ public class StreamingService {
         return selected;
     }
 
-    private List<Media> searchByCategory(String category) {
+
+    public ArrayList<Media> searchByCategory(String category) {
+        ArrayList<Media> result = new ArrayList<>();
+
         if (category == null || category.isBlank()) {
-            return List.of();
+            return result; // empty ArrayList
         }
 
-        return mediaLibrary.stream()
-                .filter(m -> m.getCategory().equalsIgnoreCase(category))
-                .collect(Collectors.toList());
+        // Check if the category exists in Category.All
+        boolean validCategory = false;
+        for (String c : Category.All) {
+            if (c.equalsIgnoreCase(category)) {
+                validCategory = true;
+                break;
+            }
+        }
+
+        if (!validCategory) {
+            return result; // return empty if invalid category
+        }
+
+        // Filter mediaLibrary and add matching items to result
+        for (Media m : mediaLibrary) {
+            if (m.getCategory() != null && m.getCategory().equalsIgnoreCase(category)) {
+                result.add(m);
+            }
+        }
+
+        return result;
     }
+
 
     private void getListOfSaved() {
 
