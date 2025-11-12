@@ -48,6 +48,7 @@ abstract class Media
 # double rating
 # String category
 + media(int releaseYear, double rating, String category)
+playMedia()
 }
 
 class Movie
@@ -85,7 +86,7 @@ class FileIO
 
 interface Playable
 {
-# playMedia()
+
 }
 
 @enduml
