@@ -154,13 +154,20 @@ public class StreamingService {
                 createNewUser();
                 continueLoop = false;
             } else if (choice == 2) {
-                currentUser = logIn();
-                continueLoop = false;
+                User user = logIn();
+                if (user != null) {    // Successful login
+                    currentUser = user;
+                    continueLoop = false; // proceed to main menu
+                } else {
+                    // User chose to go back
+                    ui.displayMsg("Returning to start menu...");
+                }
             } else {
                 ui.displayMsg("Type a valid number");
             }
         }
     }
+
 
     private void mainMenu() {
         // Define menu options
