@@ -28,23 +28,20 @@ public class Series extends Media implements Playable {
         ui.displayMsg("1. Play " + getName());
         ui.displayMsg("2. Save " + getName() + " to your list");
 
-        boolean continueLoop = true;
-        while (continueLoop) {
-            int choice = ui.promptNumeric("Type 1 or 2");
-            if (choice == 1) {
-                ui.displayMsg("Now playing: " + getName());
-                // Only add if not already in the list
-                if (!u.getSeenMedia().contains(this)) {
-                    u.getSeenMedia().add(this);
-                }
-                continueLoop = false;
-            } else if (choice == 2) {
-                ui.displayMsg(getName() + " has been added to your list");
-                // Only add if not already in the list
-                if (!u.getWantsToSee().contains(this)) {
-                    u.getWantsToSee().add(this);
-                }
+        int choice = ui.promptNumeric("Type 1 or 2");
+
+        if (choice == 1) {
+            ui.displayMsg("Now playing: " + getName());
+            if (!u.getSeenMedia().contains(this)) {
+                u.getSeenMedia().add(this);
             }
+        } else if (choice == 2) {
+            ui.displayMsg(getName() + " has been added to your list");
+            if (!u.getWantsToSee().contains(this)) {
+                u.getWantsToSee().add(this);
+            }
+        } else {
+            ui.displayMsg("Invalid number");
         }
     }
 }
