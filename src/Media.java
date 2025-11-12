@@ -1,12 +1,10 @@
-public abstract class Media
-{
+public abstract class Media {
     protected String name;
     protected int releaseYear;
     protected double rating;
     protected String category;
 
-    public Media(String name, int releaseYear, double rating, String category)
-    {
+    public Media(String name, int releaseYear, double rating, String category) {
         this.name = name;
         this.releaseYear = releaseYear;
         this.rating = rating;
@@ -17,6 +15,11 @@ public abstract class Media
         return name;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
     public void playMedia(User currentUser) {
+        // Implementation here
     }
 }
