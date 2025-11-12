@@ -45,7 +45,7 @@ public class StreamingService {
         for (String line : movieLines) {
             if (line.trim().isEmpty()) continue;
             String[] parts = line.split(";");
-            if (parts.length < 5) { // name, year, category, rating, length
+            if (parts.length < 4) {
                 ui.displayMsg("Skipping malformed movie line: " + line);
                 continue;
             }
@@ -54,10 +54,12 @@ public class StreamingService {
                 int year = Integer.parseInt(parts[1].trim());
                 String category = parts[2].trim();
                 double rating = Double.parseDouble(parts[3].trim().replace(',', '.'));
-                double length = Double.parseDouble(parts[4].trim().replace(',', '.'));
+                double length = 0;
+                if (parts.length >= 5 && !parts[4].trim().isEmpty()) {
+                    length = Double.parseDouble(parts[4].trim().replace(',', '.'));
+                }
 
-                Movie m = new Movie(name, year, rating, category, length);
-                movies.add(m);
+                movies.add(new Movie(name, year, rating, category, length));
             } catch (NumberFormatException e) {
                 ui.displayMsg("Skipping invalid movie line: " + line);
             }
@@ -67,23 +69,27 @@ public class StreamingService {
         List<String> seriesLines = IO.readData("Data/series.csv");
         for (String line : seriesLines) {
             if (line.trim().isEmpty()) continue;
+
             String[] parts = line.split(";");
-            if (parts.length < 8) { // name, year, category, rating, length, season, episode, endYear
+            if (parts.length < 5) {
                 ui.displayMsg("Skipping malformed series line: " + line);
                 continue;
             }
+
             try {
                 String name = parts[0].trim();
-                int year = Integer.parseInt(parts[1].trim());
-                double rating = Double.parseDouble(parts[2].trim().replace(',', '.'));
-                String category = parts[3].trim();
-                double length = Double.parseDouble(parts[4].trim().replace(',', '.'));
-                int season = Integer.parseInt(parts[5].trim());
-                int episode = Integer.parseInt(parts[6].trim());
-                int endYear = Integer.parseInt(parts[7].trim());
+                String yearRange = parts[1].trim();
+                String category = parts[2].trim();
+                double rating = Double.parseDouble(parts[3].trim().replace(',', '.'));
 
-                Series s = new Series(name, year, rating, category, season, episode, endYear);
-                series.add(s);
+                String seasonsRaw = parts[4].trim();
+                String[] seasonsSplit = seasonsRaw.split("[,;]");
+                List<String> seasons = new ArrayList<>();
+                for (String s : seasonsSplit) {
+                    if (!s.trim().isEmpty()) seasons.add(s.trim());
+                }
+
+                series.add(new Series(name, yearRange, rating, category, seasons));
             } catch (NumberFormatException e) {
                 ui.displayMsg("Skipping invalid series line: " + line);
             }
@@ -95,6 +101,8 @@ public class StreamingService {
 
         ui.displayMsg("Loaded " + movies.size() + " movies and " + series.size() + " series into library.");
     }
+
+
 
 
 
@@ -194,9 +202,9 @@ public class StreamingService {
                     searchByName();
                     break;
                 case 2:
-                    String category = ui.promptText("Enter a category to search for: ");
-                    List<Media> results = searchByCategory(category);
+                    searchByCategory();
                     break;
+
                 case 3:
                     getListOfSaved();
                     break;
@@ -215,75 +223,59 @@ public class StreamingService {
         }
     }
 
-    private Media searchByName() {
+    private void searchByName() {
         String searchFor = ui.promptText("Enter the name of the media to search for: ").toLowerCase();
 
         ArrayList<Media> foundMedia = new ArrayList<>();
 
-        // Search through all movies
         for (Movie m : movies) {
-            if (m.getName().toLowerCase().contains(searchFor)) {
-                foundMedia.add(m);
-            }
+            if (m.getName().toLowerCase().contains(searchFor)) foundMedia.add(m);
         }
 
-        // Search through all series
         for (Series s : series) {
-            if (s.getName().toLowerCase().contains(searchFor)) {
-                foundMedia.add(s);
-            }
+            if (s.getName().toLowerCase().contains(searchFor)) foundMedia.add(s);
         }
 
         if (foundMedia.isEmpty()) {
             ui.displayMsg("No media found with that name.");
-            return null;
+            return;
         }
 
-        // Create a list of media names for the menu
         ArrayList<String> mediaNames = new ArrayList<>();
-        for (Media media : foundMedia) {
-            mediaNames.add(media.getName());
-        }
+        for (Media media : foundMedia) mediaNames.add(media.getName());
 
-        // Prompt the user to select a media item
         int choice = ui.promptMenu("Select a media from the results:", mediaNames);
-
         Media selected = foundMedia.get(choice - 1);
+
         ui.displayMsg("You selected: " + selected.getName());
 
-        return selected;
+
+        selected.playMedia(currentUser);
     }
 
 
-    private ArrayList<Media> searchByCategory(String category) {
-        ArrayList<Media> result = new ArrayList<>();
 
-        if (category == null || category.isBlank()) {
-            return result; // empty ArrayList
+    private void searchByCategory() {
+        String category = ui.promptText("Enter a category to search for: ");
+        List<Media> results = searchByCategory(category);
+
+        if (results.isEmpty()) {
+            ui.displayMsg("No media found in that category.");
+            return;
         }
 
-        // Check if the category exists in Category.All
-        boolean validCategory = false;
-        for (String c : Category.All) {
-            if (c.equalsIgnoreCase(category)) {
-                validCategory = true;
-                break;
-            }
-        }
+        ArrayList<String> mediaNames = new ArrayList<>();
+        for (Media m : results) mediaNames.add(m.getName());
 
-        if (!validCategory) {
-            return result; // return empty if invalid category
-        }
+        int choice = ui.promptMenu("Select a media from the results:", mediaNames);
+        Media selected = results.get(choice - 1);
 
-        // Filter mediaLibrary and add matching items to result
-        for (Media m : mediaLibrary) {
-            if (m.getCategory() != null && m.getCategory().equalsIgnoreCase(category)) {
-                result.add(m);
-            }
-        }
+        ui.displayMsg("You selected: " + selected.getName());
 
-        return result;
+        // ✅ Play the media
+        selected.playMedia(currentUser);
     }
+
 
 
     private void getListOfSaved() {
