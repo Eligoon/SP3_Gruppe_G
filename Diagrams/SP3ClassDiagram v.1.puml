@@ -20,13 +20,25 @@ class Main
 class StreamingService
 {
  - ArrayList<User>
- - ArrayList<Media>
- + startMenu()
- + mainMenu()
- + searchByName()
- + searchByCategory()
- + getListOfWatched()
- + getListOfSaved()
+ - ArrayList<Movie> movies
+ - ArrayList<Series> series
+ - User currentUser = null;
+ - final List<Media> mediaLibrary;
+
+ + start()
+ - loadUsers()
+ - validateUser()
+ - createNewUser()
+ - startMenu()
+ - mainMenu()
+ - searchByName()
+ - searchByCategory()
+ - getListOfWatched()
+ - getListOfSaved()
+ - logIn()
+ + getMovies()
+ + getSeries()
+ + getUsers()
 }
 
 abstract class Media

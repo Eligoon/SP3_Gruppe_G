@@ -181,7 +181,7 @@ public class StreamingService {
         return selected;
     }
 
-    public List<Media> searchByCategory(String category) {
+    private List<Media> searchByCategory(String category) {
         if (category == null || category.isBlank()) {
             return List.of();
         }
@@ -191,7 +191,7 @@ public class StreamingService {
                 .collect(Collectors.toList());
     }
 
-    public void getListOfSaved() {
+    private void getListOfSaved() {
         ArrayList<Media> list = currentUser.getWantsToSee();
         ArrayList<String> mediaNames = new ArrayList<>();
         for(Media media : list) {
@@ -201,7 +201,7 @@ public class StreamingService {
         list.get(choice -1).playMedia(currentUser);
     }
 
-    public void getListOfWatched() {
+    private void getListOfWatched() {
         ArrayList<Media> list = currentUser.getSeenMedia();
         ArrayList<String> mediaNames = new ArrayList<>();
         for(Media media : list) {
@@ -211,7 +211,7 @@ public class StreamingService {
         list.get(choice -1).playMedia(currentUser);
     }
 
-    public User logIn() {
+    private User logIn() {
         boolean continueLoop = true;
         User currentUser = null;
         while (continueLoop) {
