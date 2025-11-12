@@ -253,12 +253,11 @@ public class StreamingService {
 
 
     private void searchByCategory() {
-        String category = ui.promptText("Enter a category to search for: ");
+        String categoryInput = ui.promptText("Enter a category to search for: ").toLowerCase();
+        ArrayList<Media> results = new ArrayList<>();
 
-        // Directly filter mediaLibrary instead of calling this method again
-        List<Media> results = new ArrayList<>();
         for (Media m : mediaLibrary) {
-            if (m.getCategory().equalsIgnoreCase(category)) {
+            if (m.getCategory().toLowerCase().contains(categoryInput)) {
                 results.add(m);
             }
         }
@@ -278,6 +277,7 @@ public class StreamingService {
 
         selected.playMedia(currentUser);
     }
+
 
 
 
