@@ -1,15 +1,15 @@
 @startuml
-@startuml
 !pragma layout smetana
 
 
-TextUI <.. StreamingService
-FileIO <.. StreamingService
-Category <.. StreamingService
-Main <-- StreamingService
+TextUI <-- StreamingService
+FileIO <-- StreamingService
+Category <-- StreamingService
 
-StreamingService "1" o-- "*" User
-StreamingService "1" o-- "*" Media
+
+Main *-- StreamingService
+StreamingService "1" *-- "*" User
+StreamingService "1" *-- "*" Media
 
 Media <|-- Movie
 Media <|-- Series
@@ -78,8 +78,8 @@ class Series
 - int season
 - int episode
 - int endYear
-List seasons
-String yearRange
+- List seasons
+- String yearRange
 
 + Series(String name, int releaseYear, double rating, String category, int season, int episode, int endYear)
 + playMedia(User u)
