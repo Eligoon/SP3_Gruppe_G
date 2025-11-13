@@ -1,12 +1,13 @@
 import utility.TextUI;
+
 import java.util.List;
 
 public class Series extends Media implements Playable {
-    int season;
-    int episode;
-    int endYear;
-    List<String> seasons;   // for summary style
-    String yearRange;       // for summary style
+    private int season;
+    private int episode;
+    private int endYear;
+    private List<String> seasons;   // for summary style
+    private String yearRange;       // for summary style
 
     // Detailed constructor
     Series(String name, int releaseYear, double rating, String category, int season, int episode, int endYear) {
